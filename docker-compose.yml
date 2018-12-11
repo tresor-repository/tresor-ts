@@ -1,0 +1,13 @@
+version: '3.1'
+services:
+    db:
+      image: postgres:10
+      restart: always
+      volumes:
+        - .postgres:/var/lib/postgresql/data
+      environment:
+        POSTGRES_USER: tresor
+        POSTGRES_PASSWORD: tresor
+        POSTGRES_DB: tresor
+      ports:
+        - 5432:5432
