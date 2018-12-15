@@ -12,9 +12,11 @@
     "@babel/plugin-proposal-object-rest-spread": "7.2.0",
     "@babel/preset-env": "7.2.0",
     "@babel/preset-typescript": "7.1.0",
-    "typescript": "3.2.2",
+    "@types/async": "2.0.50",
+    "@types/pg": "7.4.11",
+    "concurrently": "3.5.1",
     "nodemon": "1.13.0",
-    "concurrently": "3.5.1"
+    "typescript": "3.2.2"
   },
   "scripts": {
     "type-check": "tsc --noEmit",
@@ -24,7 +26,10 @@
     "build:types:watch": "tsc -w",
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
     "debug": "npm run build && npm run debug:watch",
-    "debug:serve": "nodemon --inspect lib/index.js", 
+    "debug:serve": "nodemon --inspect lib/index.js",
     "debug:watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run build:types:watch\" \"npm run debug:serve\""
+  },
+  "dependencies": {
+    "pg": "7.7.1"
   }
 }
