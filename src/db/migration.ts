@@ -11,6 +11,7 @@ export function migrate(config: Config) {
 async function doMigrate(pool: Pool) {
   try {
     pool.connect();
+    console.log(`total pool count: ${pool.totalCount}`);
     const dbVersion = await getCurrentDbVersion(pool);
     const codeVersion = getCodeVersion();
     console.log(`dbVersion: ${dbVersion}, codeVersion: ${codeVersion}`);
@@ -18,10 +19,10 @@ async function doMigrate(pool: Pool) {
       for(let query of QUERIES) {
         console.log("Executing migration query...")
         console.log(query)
-        pool.query(query) 
+        await pool.query(query) 
       }
       
-      updateDbVersion(pool, codeVersion)
+      await updateDbVersion(pool, codeVersion)
     }
     pool.end()
   } catch (e) {
@@ -30,7 +31,7 @@ async function doMigrate(pool: Pool) {
 }
 
 async function getCurrentDbVersion(pool: Pool) {
-  pool.query(
+  await pool.query(
     `
     CREATE TABLE IF NOT EXISTS meta (
       key VARCHAR(50) PRIMARY KEY,
@@ -39,7 +40,7 @@ async function getCurrentDbVersion(pool: Pool) {
     `
   );
 
-  pool.query(
+  await pool.query(
     `
     INSERT INTO meta (key, value)
                 VALUES ('db-version', 0)
@@ -55,9 +56,10 @@ async function getCurrentDbVersion(pool: Pool) {
 
 async function updateDbVersion(pool: Pool, version: number) {
   console.log("Updating database version...")
-  pool.query(
+  const result = await pool.query(
     `
     UPDATE meta SET VALUE = ${version} WHERE key = 'db-version'
     `
   )
+  return result.rowCount;
 }

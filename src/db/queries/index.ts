@@ -1,10 +1,10 @@
 export const QUERIES = [
     `
-    CREATE TABLE user (
-        id          SERIAL PRIMARY KEY,
-        email       VARCHAR,
-        password    VARCHAR
-    )
+    CREATE TABLE "user" (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR,
+        password VARCHAR
+    );
     `
 ]
 
