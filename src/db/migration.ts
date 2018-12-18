@@ -5,7 +5,7 @@ import { getCodeVersion, QUERIES } from "./queries/index";
 export function migrate(config: Config) {
   console.log("Preparing db migration...");
   const pool = getPool(config)
-  doMigrate(pool);
+  return doMigrate(pool);
 }
 
 async function doMigrate(pool: Pool) {
