@@ -1,36 +1,28 @@
-import { Config, getPool } from ".";
 import { Pool } from "pg";
+import { Config, getPool } from ".";
 import { getCodeVersion, QUERIES } from "./queries/index";
 
-export function migrate(config: Config) {
-  console.log("Preparing db migration...");
-  const pool = getPool(config)
+export function migrate(config: Config): Promise<boolean> {
+  const pool = getPool(config);
   return doMigrate(pool);
 }
 
-async function doMigrate(pool: Pool) {
-  try {
+async function doMigrate(pool: Pool): Promise<boolean> {
     pool.connect();
-    console.log(`total pool count: ${pool.totalCount}`);
     const dbVersion = await getCurrentDbVersion(pool);
     const codeVersion = getCodeVersion();
-    console.log(`dbVersion: ${dbVersion}, codeVersion: ${codeVersion}`);
     if (codeVersion > dbVersion) {
-      for(let query of QUERIES) {
-        console.log("Executing migration query...")
-        console.log(query)
-        await pool.query(query) 
+      for (const query of QUERIES) {
+        await pool.query(query);
       }
-      
-      await updateDbVersion(pool, codeVersion)
+
+      await updateDbVersion(pool, codeVersion);
     }
-    pool.end()
-  } catch (e) {
-    console.log(e);
-  }
+    pool.end();
+    return true;
 }
 
-async function getCurrentDbVersion(pool: Pool) {
+async function getCurrentDbVersion(pool: Pool): Promise<number> {
   await pool.query(
     `
     CREATE TABLE IF NOT EXISTS meta (
@@ -54,12 +46,11 @@ async function getCurrentDbVersion(pool: Pool) {
   return result.rows[0].value;
 }
 
-async function updateDbVersion(pool: Pool, version: number) {
-  console.log("Updating database version...")
+async function updateDbVersion(pool: Pool, version: number): Promise<number> {
   const result = await pool.query(
     `
     UPDATE meta SET VALUE = ${version} WHERE key = 'db-version'
     `
-  )
+  );
   return result.rowCount;
 }
