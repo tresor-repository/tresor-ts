@@ -3,12 +3,14 @@
   "rules": {
     "array-type": [true, "array-simple"],
     "arrow-return-shorthand": true,
-    "ban": [true,
-      {"name": "parseInt", "message": "tsstyle#type-coercion"},
-      {"name": "parseFloat", "message": "tsstyle#type-coercion"},
-      {"name": "Array", "message": "tsstyle#array-constructor"}
+    "ban": [
+      true,
+      { "name": "parseInt", "message": "tsstyle#type-coercion" },
+      { "name": "parseFloat", "message": "tsstyle#type-coercion" },
+      { "name": "Array", "message": "tsstyle#array-constructor" }
     ],
-    "ban-types": [true,
+    "ban-types": [
+      true,
       ["Object", "Use {} instead."],
       ["String", "Use 'string' instead."],
       ["Number", "Use 'number' instead."],
@@ -29,7 +31,6 @@
     "no-conditional-assignment": true,
     "no-construct": true,
     "no-debugger": true,
-    "no-default-export": true,
     "no-duplicate-variable": true,
     "no-inferrable-types": true,
     "no-namespace": [true, "allow-declarations"],
@@ -38,7 +39,11 @@
     "no-unused-expression": true,
     "no-var-keyword": true,
     "object-literal-shorthand": true,
-    "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"],
+    "only-arrow-functions": [
+      true,
+      "allow-declarations",
+      "allow-named-functions"
+    ],
     "prefer-const": true,
     "radix": true,
     "semicolon": [true, "always", "ignore-bound-class-methods"],
